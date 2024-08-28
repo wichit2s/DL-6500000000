@@ -136,4 +136,7 @@ ui-tests/playwright-report
 ui-tests/.yarn/*
 ui-tests/.pnp.*
 
+data/
 venv/
+*.pth
+*.pt
