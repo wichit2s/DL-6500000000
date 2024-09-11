@@ -1,4 +1,6 @@
 # DL-6500000000
+    
+    git clone https://github.com/wichit2s/DL-650000000
 
 ## 1. create **kerasenv** and activate
 
