@@ -27,7 +27,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('classifying')
-        self.load() # self.train_dataloader, self.test_dataloader
         self.device = (
             "cuda"
             if torch.cuda.is_available()
@@ -36,14 +35,17 @@ class Command(BaseCommand):
             else "cpu"
         )
         print(f"Using {self.device} device")
+        self.load_datasets() # self.train_dataloader, self.test_dataloader
         self.model = NeuralNetwork().to(self.device)
         self.loss_fn = nn.CrossEntropyLoss()
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=1e-3)
         self.train_size = len(self.train_dataloader.dataset)
         self.model.train()
 
+        self.learn()
 
-    def load(self):
+
+    def load_datasets(self):
         self.training_data = datasets.FashionMNIST(
             root="data",
             train=True,
@@ -115,8 +117,8 @@ class Command(BaseCommand):
         print("Saved PyTorch Model State to model.pth")
 
     def load(self):
-        model = NeuralNetwork().to(self.device)
-        model.load_state_dict(torch.load("model.pth", weights_only=True))
+        self.model = NeuralNetwork().to(self.device)
+        self.model.load_state_dict(torch.load("model.pth", weights_only=True))
 
     def predict(self):
         classes = [
