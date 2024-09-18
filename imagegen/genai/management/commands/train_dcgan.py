@@ -16,7 +16,7 @@ manualSeed = 999
 random.seed(manualSeed)
 torch.manual_seed(manualSeed)
 torch.use_deterministic_algorithms(True)
-dataroot = '/Users/paul/data/'  # Root directory for dataset
+dataroot = 'D:\\data'  # Root directory for dataset
 workers = 2  # Number of workers for dataloader
 batch_size = 128  # Batch size during training
 image_size = 64  # Spatial size of training images. All images will be resized
@@ -33,13 +33,13 @@ device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else 
 def show_images(dataloader, device, batch=0):
     # Plot some training images
     real_batch = next(iter(dataloader))
-    grid_images = np.transpose(vutils.make_grid(real_batch[0].to(device)[batch:64+batch*64], padding=2, normalize=True).cpu())
+    grid_images = np.transpose(vutils.make_grid(real_batch[0].to(device)[batch:64+batch*64], padding=2, normalize=True).cpu(), (1,2,0))
     # image = Image.fromarray(grid_images)
     # image.show()
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(10, 10))
     plt.axis("off")
     plt.title("Training Images")
-    plt.imshow(grid_images, (1, 2, 0))
+    plt.imshow(grid_images)
     plt.show()
 
 def show_errors_plot(G_losses, D_losses):
@@ -143,7 +143,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print('train_dcgan Generative Adversarial Network')
         print('Resource Link: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html ')
-
         # We can use an image folder dataset the way we have it setup.
         # Create the dataset
         dataset = dset.ImageFolder(root=dataroot,
@@ -153,11 +152,14 @@ class Command(BaseCommand):
                                        transforms.ToTensor(),
                                        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                    ]))
+
         # Create the dataloader
         dataloader = torch.utils.data.DataLoader(dataset,
                                                  batch_size=batch_size,
                                                  shuffle=True, num_workers=workers)
 
+
+        #show_images(dataloader, device, 2)
         netG = Generator(ngpu).to(device)
         netG.apply(weights_init)
 

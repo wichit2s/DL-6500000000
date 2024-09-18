@@ -11,14 +11,21 @@ https://pytorch.org/get-started/locally/
 
 Stable -> OS -> Conda -> Default
 
-    conda install pytorch::pytorch torchvision torchaudio -c pytorch
+    conda install pytorch torchvision torchaudio cpuonly -c pytorch
 
 
 ## Install django channels daphne
 
-    conda install django channels daphne
+    conda install django -c main
+    conda install channels daphne -c conda-forge
+
+## install gradio
+
+https://anaconda.org
+
+    conda install gradio -c conda-forge
 
 ## Install tqm diffusers
 
     conda install tdqm
-    conda install -c conda-forge diffusers
+    conda install diffusers transformers accelerate -c conda-forge

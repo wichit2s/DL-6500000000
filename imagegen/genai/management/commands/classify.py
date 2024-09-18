@@ -26,7 +26,22 @@ class NeuralNetwork(nn.Module):
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        pass
+        print('classifying')
+        self.load() # self.train_dataloader, self.test_dataloader
+        self.device = (
+            "cuda"
+            if torch.cuda.is_available()
+            else "mps"
+            if torch.backends.mps.is_available()
+            else "cpu"
+        )
+        print(f"Using {self.device} device")
+        self.model = NeuralNetwork().to(self.device)
+        self.loss_fn = nn.CrossEntropyLoss()
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=1e-3)
+        self.train_size = len(self.train_dataloader.dataset)
+        self.model.train()
+
 
     def load(self):
         self.training_data = datasets.FashionMNIST(
@@ -64,22 +79,7 @@ class Command(BaseCommand):
         print("Done!")
 
     def train(self):
-        # Get cpu, gpu or mps device for training.
-        self.device = (
-            "cuda"
-            if torch.cuda.is_available()
-            else "mps"
-            if torch.backends.mps.is_available()
-            else "cpu"
-        )
-        print(f"Using {self.device} device")
-
-        self.model = NeuralNetwork().to(self.device)
-        self.loss_fn = nn.CrossEntropyLoss()
-        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=1e-3)
-        size = len(self.dataloader.dataset)
-        self.model.train()
-        for batch, (X, y) in enumerate(self.dataloader):
+        for batch, (X, y) in enumerate(self.train_dataloader):
             X, y = X.to(self.device), y.to(self.device)
 
             # Compute prediction error
@@ -96,12 +96,12 @@ class Command(BaseCommand):
                 print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
     def test(self):
-        size = len(self.dataloader.dataset)
-        num_batches = len(self.dataloader)
+        size = len(self.test_dataloader.dataset)
+        num_batches = len(self.test_dataloader)
         self.model.eval()
         test_loss, correct = 0, 0
         with torch.no_grad():
-            for X, y in self.dataloader:
+            for X, y in self.test_dataloader:
                 X, y = X.to(self.device), y.to(self.device)
                 pred = self.model(X)
                 test_loss += self.loss_fn(pred, y).item()
