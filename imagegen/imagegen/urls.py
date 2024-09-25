@@ -19,6 +19,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('chatgpt.urls')),
+    # path('', include('chatgpt.urls')),
     path("admin/", admin.site.urls),
+
+    path("chat/", include('chatbot.urls')),
+    path("image/", include('imagebot.urls')),
 ]

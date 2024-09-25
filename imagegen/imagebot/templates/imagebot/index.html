@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ImageBot Index Page</title>
+    <script src="//unpkg.com/htmx.org@2.0.2" defer></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="//unpkg.com/htmx.org@1.9.12/dist/ext/ws.js" defer></script>
+    <script src="//cdn.tailwindcss.com" defer></script>
+</head>
+<body class="min-h-screen h-full w-full bg-zinc-200"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    >
+<div hx-ext="ws"
+     ws-connect="/ws/image"
+     class="min-h-screen w-full h-fullflex-col bg-zinc-200"
+>
+    <h1 class="text-center text-3xl font-bold my-2">ImageBot Index Page</h1>
+    <form ws-send class="w-full">
+        {% csrf_token %}
+        <input type="text"
+               name="prompt"
+               class="mx-auto appearance-none px-4 py-3 block w-1/2 text-gray-700 border boder-gray-200 rounded-xl"
+               />
+    </form>
+    <main class="flex flex-col w-full h-full text-center">
+        <h1>Progress</h1>
+        {% include 'imagebot/update.html' %}
+        <h1>Result</h1>
+        <div id="image" class="h-96 border w-full flex flex-col m-4 border"></div>
+    </main>
+</div>
+</body>
+</html>

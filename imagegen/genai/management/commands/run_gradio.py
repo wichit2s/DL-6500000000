@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 from diffusers import DiffusionPipeline
 #from PIL import Image
 import torch
-import gradio
+# import gradio
 
 
 
@@ -13,5 +13,5 @@ class Command(BaseCommand):
 
         model_name = 'stable-diffusion-v1-5/stable-diffusion-v1-5'
         pipe = DiffusionPipeline.from_pretrained(model_name) #, torch_dtype=torch.float16)
-        gradio.Interface.from_pipeline(pipe).launch()
+        # gradio.Interface.from_pipeline(pipe).launch()
 

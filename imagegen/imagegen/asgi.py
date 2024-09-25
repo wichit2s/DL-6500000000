@@ -11,6 +11,8 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter 
 from channels.auth import AuthMiddlewareStack
 from chatgpt import routing
+from imagebot import routing as imagebot_routing
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "imagegen.settings")
 #application = get_asgi_application()
 application = ProtocolTypeRouter({
@@ -18,6 +20,7 @@ application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter(
             routing.websocket_urlpatterns
+            + imagebot_routing.websocket_urlpatterns
         )
     )
 })

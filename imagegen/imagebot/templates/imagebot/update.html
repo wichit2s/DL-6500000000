@@ -1,0 +1,15 @@
+<div id="update"
+     hx-swap="innerHTML"
+     class="flex flex-row py-6">
+    <div class="mx-auto w-80 flex justify-around">
+        {% for s in steps %}
+            {% if s < step %}
+                <span class="border-gray-400 bg-green-400 h-8 w-8 border-2 rounded-full"></span>
+            {% elif s == step %}
+                <span class="border-gray-400 bg-gray-200 h-8 w-8 border-2 rounded-full animate-spin border-t-blue-600"></span>
+            {% else %}
+                <span class="border-gray-400 bg-gray-200 h-8 w-8 border-2 rounded-full"></span>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

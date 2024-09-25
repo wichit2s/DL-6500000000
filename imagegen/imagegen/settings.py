@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'chatgpt',
     'genai',
+    'imagebot',
+    'chatbot',
 ]
 
 MIDDLEWARE = [
